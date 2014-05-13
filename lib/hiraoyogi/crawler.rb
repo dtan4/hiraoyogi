@@ -32,6 +32,8 @@ module Hiraoyogi
           do_crawl(link_url, domain)
         end
       end
+    rescue OpenURI::HTTPError
+      @url_list.delete(url)
     end
 
     def url_domain(url)

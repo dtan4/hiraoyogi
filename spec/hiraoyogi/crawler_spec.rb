@@ -13,6 +13,10 @@ module Hiraoyogi
           .to_return(body: open(fixture_path("index.html")), status: 200)
         stub_request(:get, "http://example.com/child1.html")
           .to_return(body: open(fixture_path("child1.html")), status: 200)
+        stub_request(:get, "http://example.com/grandchild2.html")
+          .to_return(status: 403)
+        stub_request(:get, "http://example.com/grandchild3.html")
+          .to_return(status: 404)
       end
 
       it "should collect the URL list" do
