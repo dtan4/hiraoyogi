@@ -29,7 +29,7 @@ module Hiraoyogi
         link_url = absolute_url(url, CGI.unescape(link.attr("href")))
 
         next if @url_list.include?(link_url)
-        next unless inner_page?(link_url, domain) && static_page?(link_url)
+        next unless inner_page?(link_url, domain)
 
         sleep SLEEP_SECOND
         do_crawl(link_url, domain)
@@ -39,7 +39,7 @@ module Hiraoyogi
     def parse_html(url)
       return nil if @url_list.include?(url)
 
-      @url_list << url
+      @url_list << url if static_page?(url)
       [Nokogiri::HTML.parse(open(url, redirect: false).read), url]
 
     rescue OpenURI::HTTPRedirect => redirect
@@ -60,7 +60,17 @@ module Hiraoyogi
     def absolute_url(root_url, path)
       url = expand_url(root_url, path)
       url = remove_section(url)
-      (url[-1] == "/") ? "#{url}index.html" : url
+      complete_url(url)
+    end
+
+    def complete_url(url)
+      if %r{\Ahttps?://[^/]+\z} =~ url
+        "#{url}/index.html"
+      elsif (url[-1] == "/")
+        "#{url}index.html"
+      else
+        url
+      end
     end
 
     def expand_url(root_url, path)
