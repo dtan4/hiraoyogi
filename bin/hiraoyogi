@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require "hiraoyogi"
+
+USAGE = "USAGE: $ hiraoyogi URL"
+
+unless ARGV.length == 1
+  $stderr.puts USAGE
+  exit 1
+end
+
+url = ARGV[0]
+
+crawler = Hiraoyogi::Crawler.new
+crawler.crawl(url)
+puts crawler.url_list
