@@ -16,6 +16,8 @@ module Hiraoyogi
         stub_request(:get, "http://example.com/grandchild3.html")
           .to_return(status: 404)
         stub_request(:get, "http://example.com/~user/index.html")
+          .to_return(status: 301, headers: { "Location" => "http://example.com/~user/en/index.html" })
+        stub_request(:get, "http://example.com/~user/en/index.html")
           .to_return(body: open(fixture_path("user.html")), status: 200)
       end
 
@@ -24,7 +26,7 @@ module Hiraoyogi
         expect(crawler.url_list).to match_array [
                                                  "http://example.com/index.html",
                                                  "http://example.com/child1.html",
-                                                 "http://example.com/~user/index.html"
+                                                 "http://example.com/~user/en/index.html"
                                                 ]
       end
     end

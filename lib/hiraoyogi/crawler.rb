@@ -5,6 +5,8 @@ require "cgi"
 
 module Hiraoyogi
   class Crawler
+    SLEEP_SECOND = 0.1
+
     attr_reader :url_list
 
     def initialize
@@ -13,14 +15,13 @@ module Hiraoyogi
 
     def crawl(root_url)
       url = root_url[-1] == "/" ? "#{root_url}index.html" : "#{root_url}/index.html"
-      @url_list << url
       do_crawl(url, url_domain(url))
     end
 
     private
 
     def do_crawl(url, domain)
-      doc = Nokogiri::HTML.parse(open(url).read)
+      doc, url = parse_html(url)
 
       doc.css("a").each do |link|
         next unless link.attr("href")
@@ -30,12 +31,26 @@ module Hiraoyogi
         next if @url_list.include?(link_url)
         next unless inner_page?(link_url, domain) && static_page?(link_url)
 
-        @url_list << link_url
-        sleep 0.1
+        sleep SLEEP_SECOND
         do_crawl(link_url, domain)
-      end
+      end if doc
+    end
+
+    def parse_html(url)
+      return nil if @url_list.include?(url)
+
+      @url_list << url
+      [Nokogiri::HTML.parse(open(url, redirect: false).read), url]
+
+    rescue OpenURI::HTTPRedirect => redirect
+      @url_list.delete(url)
+      url = "#{redirect.uri.scheme}://#{redirect.uri.host}#{redirect.uri.path}"
+      sleep SLEEP_SECOND
+      retry
+
     rescue OpenURI::HTTPError
       @url_list.delete(url)
+      nil
     end
 
     def url_domain(url)
