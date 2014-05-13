@@ -44,6 +44,7 @@ module Hiraoyogi
 
     def absolute_url(root_url, path)
       url = expand_url(root_url, path)
+      url = remove_section(url)
       (url[-1] == "/") ?  "#{url}index.html" : url
     end
 
@@ -55,12 +56,16 @@ module Hiraoyogi
       end
     end
 
+    def remove_section(url)
+      url.sub(/#.*\z/, "")
+    end
+
     def inner_page?(url, domain)
       %r{\Ahttps?://#{domain}} =~ url
     end
 
     def static_page?(url)
-      /\.html?\z/ =~ File.extname(uri_name(url))
+      /\.html?\z/ =~ uri_name(url)
     end
 
     def uri_name(url)
