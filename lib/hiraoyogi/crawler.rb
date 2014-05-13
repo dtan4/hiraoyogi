@@ -1,6 +1,7 @@
 require "nokogiri"
 require "open-uri"
 require "uri"
+require "cgi"
 
 module Hiraoyogi
   class Crawler
@@ -22,16 +23,15 @@ module Hiraoyogi
       doc = Nokogiri::HTML.parse(open(url).read)
 
       doc.css("a").each do |link|
-        link_url = absolute_url(url, link.attr("href"))
+        link_url = absolute_url(url, CGI.unescape(link.attr("href")))
 
         next if @url_list.include?(link_url)
+        next unless inner_page?(link_url, domain)
         next unless static_page?(link_url)
 
-        if inner_page?(link_url, domain)
-          @url_list << link_url
-          sleep 0.1
-          do_crawl(link_url, domain)
-        end
+        @url_list << link_url
+        sleep 0.1
+        do_crawl(link_url, domain)
       end
     rescue OpenURI::HTTPError
       @url_list.delete(url)
