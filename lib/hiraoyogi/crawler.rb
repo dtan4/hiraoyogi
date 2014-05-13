@@ -29,6 +29,7 @@ module Hiraoyogi
 
         if inner_page?(link_url, domain)
           @url_list << link_url
+          sleep 0.1
           do_crawl(link_url, domain)
         end
       end
