@@ -45,7 +45,7 @@ module Hiraoyogi
     def absolute_url(root_url, path)
       url = expand_url(root_url, path)
       url = remove_section(url)
-      (url[-1] == "/") ?  "#{url}index.html" : url
+      (url[-1] == "/") ? "#{url}index.html" : url
     end
 
     def expand_url(root_url, path)
@@ -69,11 +69,7 @@ module Hiraoyogi
     end
 
     def uri_name(url)
-      if url[-1] == "/"
-        "index.html"
-      else
-        File.basename(URI.parse(url).path)
-      end
+      File.basename(URI.parse(url).path)
     end
   end
 end
