@@ -23,11 +23,12 @@ module Hiraoyogi
       doc = Nokogiri::HTML.parse(open(url).read)
 
       doc.css("a").each do |link|
+        next unless link.attr("href")
+
         link_url = absolute_url(url, CGI.unescape(link.attr("href")))
 
         next if @url_list.include?(link_url)
-        next unless inner_page?(link_url, domain)
-        next unless static_page?(link_url)
+        next unless inner_page?(link_url, domain) && static_page?(link_url)
 
         @url_list << link_url
         sleep 0.1
