@@ -58,7 +58,7 @@ module Hiraoyogi
     end
 
     def static_page?(url)
-      /\.html?$/ =~ File.extname(uri_name(url))
+      /\.html?\z/ =~ File.extname(uri_name(url))
     end
 
     def uri_name(url)
