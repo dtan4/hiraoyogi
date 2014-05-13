@@ -9,13 +9,15 @@ module Hiraoyogi
 
     attr_reader :url_list
 
-    def initialize
+    def initialize(database)
       @url_list = []
+      @database = database
     end
 
     def crawl(root_url)
       url = root_url[-1] == "/" ? "#{root_url}index.html" : "#{root_url}/index.html"
       do_crawl(url, url_domain(url))
+      @database.build
     end
 
     private
@@ -34,6 +36,8 @@ module Hiraoyogi
         sleep SLEEP_SECOND
         do_crawl(link_url, domain)
       end if doc
+
+      @database.indexing(doc) if url && static_page?(url)
     end
 
     def parse_html(url)

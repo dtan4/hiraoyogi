@@ -4,7 +4,16 @@ require "webmock/rspec"
 module Hiraoyogi
   describe Crawler do
     describe "#crawl" do
-      let(:crawler) { described_class.new }
+      let(:database) { double(:database, indexing: true, build: true) }
+      let(:crawler) { described_class.new(database) }
+      let(:expected_result) do
+        [
+         "http://example.com/index.html",
+         "http://example.com/child1.html",
+         "http://example.com/child10.html",
+         "http://example.com/~user/en/index.html"
+        ]
+      end
 
       before do
         stub_request(:get, "http://example.com/index.html")
@@ -25,14 +34,19 @@ module Hiraoyogi
           .to_return(body: open(fixture_path("user.html")), status: 200)
       end
 
+      it "should call Database#indexing with static pages" do
+        crawler.crawl("http://example.com")
+        expect(database).to have_received(:indexing).exactly(expected_result.length).times
+      end
+
+      it "should call Database#build once" do
+        crawler.crawl("http://example.com")
+        expect(database).to have_received(:build).once
+      end
+
       it "should collect the URL list" do
         crawler.crawl("http://example.com")
-        expect(crawler.url_list).to match_array [
-                                                 "http://example.com/index.html",
-                                                 "http://example.com/child1.html",
-                                                 "http://example.com/child10.html",
-                                                 "http://example.com/~user/en/index.html"
-                                                ]
+        expect(crawler.url_list).to match_array expected_result
       end
     end
   end
