@@ -86,11 +86,11 @@ module Hiraoyogi
     end
 
     def inner_page?(url, domain)
-      %r{\Ahttps?://#{domain}} =~ url
+      !(%r{\Ahttps?://#{domain}} =~ url).nil?
     end
 
     def static_page?(url)
-      /\.html?\z/ =~ uri_name(url)
+      !(/\.html?\z/ =~ uri_name(url)).nil?
     end
 
     def uri_name(url)
