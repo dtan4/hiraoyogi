@@ -1,4 +1,5 @@
 require "hiraoyogi/crawler"
+require "hiraoyogi/database"
 require "hiraoyogi/version"
 
 module Hiraoyogi
