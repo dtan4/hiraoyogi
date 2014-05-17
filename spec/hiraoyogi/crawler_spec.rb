@@ -4,7 +4,7 @@ require "webmock/rspec"
 module Hiraoyogi
   describe Crawler do
     describe "#crawl" do
-      let(:database) { double(:database, indexing: true, build: true) }
+      let(:database) { double(:database, index: true, build: true) }
       let(:crawler) { described_class.new(database) }
       let(:expected_result) do
         [
@@ -36,7 +36,7 @@ module Hiraoyogi
 
       it "should call Database#indexing with static pages" do
         crawler.crawl("http://example.com")
-        expect(database).to have_received(:indexing).exactly(expected_result.length).times
+        expect(database).to have_received(:index).exactly(expected_result.length).times
       end
 
       it "should call Database#build once" do
