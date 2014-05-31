@@ -1,6 +1,6 @@
 require "hiraoyogi/analyzer"
 require "hiraoyogi/crawler"
-require "hiraoyogi/database"
+require "hiraoyogi/database/base"
 require "hiraoyogi/version"
 
 module Hiraoyogi
