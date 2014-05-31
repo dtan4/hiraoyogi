@@ -16,7 +16,7 @@ module Hiraoyogi
     private
 
     def body_text(doc)
-      doc.css("body").text.gsub(/\s/, "")
+      doc.css("body").text.gsub(/\n|\t/, "")
     end
   end
 end
