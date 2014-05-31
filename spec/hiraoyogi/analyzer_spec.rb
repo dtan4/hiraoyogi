@@ -9,7 +9,7 @@ module Hiraoyogi
     end
 
     let(:text) do
-      "すもももももももものうち a"
+      "すもももももももものうち a $$"
     end
 
     describe "#analyze_text" do
@@ -17,6 +17,7 @@ module Hiraoyogi
         result = analyzer.analyze_text(text)
         expect(result).to include "すもも" => 1, "もも" => 2, "うち" => 1
         expect(result).not_to include "a" => 1
+        expect(result).not_to include "$$" => 1
       end
     end
   end

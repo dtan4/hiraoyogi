@@ -25,7 +25,8 @@ module Hiraoyogi
     private
 
     def disallowed_word?(line)
-      DISALLOW_TYPE.include?(type(line.feature)) || line.surface.nil? || line.surface.length <= 1
+      DISALLOW_TYPE.include?(type(line.feature)) || line.surface.nil? ||
+        line.surface.length <= 1 || /\A\$/ =~ line.surface
     end
 
     def type(feature)
