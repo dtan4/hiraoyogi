@@ -1,3 +1,5 @@
+require "nkf"
+
 module Hiraoyogi
   module Database
     class Base
@@ -17,7 +19,7 @@ module Hiraoyogi
       protected
 
       def body_text(doc)
-        doc.css("body").text.gsub(/\n|\t/, "")
+        NKF.nkf("-w", doc.css("body").text).gsub(/\n|\t/, "")
       end
 
       def transpose_index_table
