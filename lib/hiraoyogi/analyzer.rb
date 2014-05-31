@@ -14,7 +14,7 @@ module Hiraoyogi
       result = {}
 
       @natto.parse(text) do |line|
-        next if DISALLOW_TYPE.include?(type(line.feature))
+        next if disallowed_word?(line)
         result[line.surface] ||= 0
         result[line.surface] += 1
       end
@@ -23,6 +23,10 @@ module Hiraoyogi
     end
 
     private
+
+    def disallowed_word?(line)
+      DISALLOW_TYPE.include?(type(line.feature)) || line.surface.nil? || line.surface.length <= 1
+    end
 
     def type(feature)
       feature.split(",")[0]
