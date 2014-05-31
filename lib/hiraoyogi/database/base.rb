@@ -2,12 +2,12 @@ module Hiraoyogi
   module Database
     class Base
       def initialize(analyzer)
-        @indices = {}
+        @index_table = {}
         @analyzer = analyzer
       end
 
       def index(url, doc)
-        @indices[url] = @analyzer.analyze_text(body_text(doc))
+        @index_table[url] = @analyzer.analyze_text(body_text(doc))
       end
 
       def build
@@ -20,8 +20,8 @@ module Hiraoyogi
         doc.css("body").text.gsub(/\n|\t/, "")
       end
 
-      def transpose_indices
-        @indices.inject({}).each do |transposed, url, index|
+      def transpose_index_table
+        @index_table.inject({}).each do |transposed, url, index|
           index.each do |word, count|
             transposed[word] ||= {}
             transposed[word][url] = count
