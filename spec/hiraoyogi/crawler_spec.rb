@@ -3,9 +3,15 @@ require "webmock/rspec"
 
 module Hiraoyogi
   describe Crawler do
+    let(:crawler) do
+      described_class.new(database)
+    end
+
+    let(:database) do
+      double(:database, index: true, build: true)
+    end
+
     describe "#crawl" do
-      let(:database) { double(:database, index: true, build: true) }
-      let(:crawler) { described_class.new(database) }
       let(:expected_result) do
         [
          "http://example.com/index.html",

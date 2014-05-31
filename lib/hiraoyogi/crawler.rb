@@ -37,7 +37,7 @@ module Hiraoyogi
         do_crawl(link_url, domain)
       end if doc
 
-      @database.index(doc) if url && static_page?(url)
+      @database.index(url, doc) if url && static_page?(url)
     end
 
     def parse_html(url)
