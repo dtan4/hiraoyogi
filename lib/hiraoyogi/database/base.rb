@@ -14,21 +14,23 @@ module Hiraoyogi
         raise NotImplementedError
       end
 
-      private
+      protected
 
       def body_text(doc)
         doc.css("body").text.gsub(/\n|\t/, "")
       end
 
       def transpose_index_table
-        @index_table.inject({}).each do |transposed, url, index|
+        transposed = {}
+
+        @index_table.each do |url, index|
           index.each do |word, count|
             transposed[word] ||= {}
             transposed[word][url] = count
           end
-
-          transposed
         end
+
+        transposed
       end
     end
   end
