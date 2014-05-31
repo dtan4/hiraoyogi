@@ -18,5 +18,16 @@ module Hiraoyogi
     def body_text(doc)
       doc.css("body").text.gsub(/\n|\t/, "")
     end
+
+    def transpose_indices
+      @indices.inject({}).each do |transposed, url, index|
+        index.each do |word, count|
+          transposed[word] ||= {}
+          transposed[word][url] = count
+        end
+
+        transposed
+      end
+    end
   end
 end
