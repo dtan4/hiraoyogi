@@ -1,7 +1,6 @@
 language: ruby
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq mecab mecab-ipadic-utf8 libmecab-dev
+  - curl https://gist.githubusercontent.com/dtan4/351d031bec0c3d45cd8f/raw/mecab_install.sh | bash
 rvm:
   - 1.9.3
   - 2.0.0
