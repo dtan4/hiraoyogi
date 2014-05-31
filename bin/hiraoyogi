@@ -11,6 +11,9 @@ end
 
 url = ARGV[0]
 
-crawler = Hiraoyogi::Crawler.new
+analyzer = Hiraoyogi::Analyzer.new
+database = Hiraoyogi::Database::MongoDB.new(analyzer)
+
+crawler = Hiraoyogi::Crawler.new(database)
 crawler.crawl(url)
 puts crawler.url_list
