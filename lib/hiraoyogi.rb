@@ -1,3 +1,4 @@
+require "hiraoyogi/analyzer"
 require "hiraoyogi/crawler"
 require "hiraoyogi/database"
 require "hiraoyogi/version"
