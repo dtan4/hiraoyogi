@@ -26,7 +26,7 @@ module Hiraoyogi
 
     def disallowed_word?(line)
       DISALLOW_TYPE.include?(type(line.feature)) || line.surface.nil? ||
-        line.surface.length <= 1 || /\A\$/ =~ line.surface
+        /\A[a-zA-Z0-9]\z/ =~ line.surface || /\A\$/ =~ line.surface
     end
 
     def type(feature)
