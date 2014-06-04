@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mongo"
   spec.add_dependency "natto"
   spec.add_dependency "nokogiri"
+  spec.add_dependency "sinatra"
+  spec.add_dependency "slim"
 
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "coveralls"
@@ -29,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "guard-rspec"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0.0"
+  spec.add_development_dependency "sinatra-reloader"
   spec.add_development_dependency "terminal-notifier-guard"
   spec.add_development_dependency "webmock"
 end
